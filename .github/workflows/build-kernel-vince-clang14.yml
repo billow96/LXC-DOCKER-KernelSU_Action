@@ -45,8 +45,8 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace
         wget https://github.com/Flyme66/lxc-docker/releases/download/Lxc5.1/LXC-DOCKER-OPEN-CONFIG.sh
-        chmod 755 LXC-DOCKER-OPEN-CONFIG.sh
-        ./LXC-DOCKER-OPEN-CONFIG.sh android-kernel/arch/arm64/configs/${{ env.KERNEL_CONFIG }}
+        chmod 777 LXC-DOCKER-OPEN-CONFIG.sh
+        ./LXC-DOCKER-OPEN-CONFIG.sh android-kernel/arch/arm64/configs/${{ env.KERNEL_CONFIG }} -w
         echo "# CONFIG_ANDROID_PARANOID_NETWORK is not set" >> android-kernel/arch/arm64/configs/${{ env.KERNEL_CONFIG }}
 
     - name: 添加runc补丁
