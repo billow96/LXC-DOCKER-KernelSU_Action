@@ -44,7 +44,7 @@ jobs:
     - name: 开启lxc和docker配置
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace
-        wget https://github.com/Flyme66/LXC-DOCKER-KernelSU_Action/releases/download/lxc5.0/add-lxc-docker-custom.sh
+        wget https://github.com/Flyme66/lxc-docker/releases/download/Lxc5.0/add-lxc-docker-custom.sh
         chmod 755 add-lxc-docker-custom.sh
         ./add-lxc-docker-custom.sh android-kernel/arch/arm64/configs/${{ env.KERNEL_CONFIG }}
         echo "# CONFIG_ANDROID_PARANOID_NETWORK is not set" >> android-kernel/arch/arm64/configs/${{ env.KERNEL_CONFIG }}
@@ -52,7 +52,7 @@ jobs:
     - name: 添加runc补丁
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace
-        wget https://github.com/Flyme66/LXC-DOCKER-KernelSU_Action/releases/download/lxc5.0/runcpatch.sh
+        wget https://github.com/Flyme66/lxc-docker/releases/download/Lxc5.0/runcpatch.sh
         chmod a+x runcpatch.sh
         if [ -f android-kernel/kernel/cgroup.c ]; then
         ./runcpatch.sh android-kernel/kernel/cgroup.c               
