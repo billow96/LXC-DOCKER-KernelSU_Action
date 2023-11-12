@@ -69,7 +69,7 @@ jobs:
 
 
 
- - name: 开始编译内核
+    - name: 开始编译内核
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
         export PATH=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/clang-r450784d/bin:$PATH
