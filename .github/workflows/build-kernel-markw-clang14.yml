@@ -58,13 +58,33 @@ jobs:
         ./runcpatch.sh android-kernel/kernel/cgroup.c               
         fi
 
-####            
+
+#######            
 #    - name: 设置ccache缓存
 #      uses: hendrikmuhs/ccache-action@v1.2
 #      with:
 #        key: build-kernel-mido-kernel
 #        max-size: 2G
 ####
+
+######
+# - name: 开始编译内核
+#      run: |
+#        cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
+#        export PATH=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/clang-r450784d/bin:$PATH
+#        export KBUILD_BUILD_HOST=17
+#        export KBUILD_BUILD_USER=HyperPower
+#        export CONFIG_FILE="${{ env.KERNEL_CONFIG }}"
+#        make -s -j$(nproc --all) O=out ARCH=arm64 ${{ env.KERNEL_CONFIG }}
+#        if [ ${{env.LLVM_CONFIG}}=y ]; then
+#        make -j$(nproc --all) CC="clang" O=out ARCH=arm64 CLANG_TRIPLE="aarch64-linux-gnu-" CROSS_COMPILE="aarch64-linux-gnu-" CROSS_COMPILE_ARM32="arm-linux-gnueabi-" LLVM=1 LLVM_IAS=1
+#        else
+#        make -j$(nproc --all) CC="clang" O=out ARCH=arm64 CLANG_TRIPLE="aarch64-linux-gnu-" CROSS_COMPILE="aarch64-linux-gnu-" CROSS_COMPILE_ARM32="arm-linux-gnueabi-"
+#        fi
+
+#######
+
+
 
  - name: 开始编译内核
       run: |
