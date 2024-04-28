@@ -32,7 +32,8 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace
         mkdir clang-aosp
-        git clone -q --depth=1 --single-branch https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86 -b android13-release clang-aosp
+        #git clone -q --depth=1 --single-branch https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86 -b android13-release clang-aosp
+        git clone -q --depth=1 --single-branch https://github.com/AOSP-12/prebuilts_clang_host_linux-x86_clang-r445002.git -b 12
     
     
     - name: 下载内核源码
