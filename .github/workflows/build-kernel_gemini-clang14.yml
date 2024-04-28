@@ -1,4 +1,4 @@
-name: 编译 lxc-docker_gmini 内核 clang 14
+name: 编译 lxc-docker_gemini 内核 clang 14
 on:
   watch:
     types: [started]
