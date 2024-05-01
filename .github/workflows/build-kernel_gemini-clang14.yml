@@ -80,7 +80,7 @@ jobs:
         export KBUILD_BUILD_USER=HyperPower
         export CONFIG_FILE="${{ env.KERNEL_CONFIG }}"
         
-        make -s -j$(nproc --all) O=out ARCH=arm64 vendor/xiaomi/mi8996_defconfig
+        #make -s -j$(nproc --all) O=out ARCH=arm64 vendor/xiaomi/mi8996_defconfig
         make -s -j$(nproc --all) O=out ARCH=arm64 ${{ env.KERNEL_CONFIG }}
         
         if [ ${{env.LLVM_CONFIG}}=y ]; then
