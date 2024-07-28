@@ -65,7 +65,9 @@ jobs:
         rm -rf KernelSU
         curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s v0.9.5
        #curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s ${{ env.KERNELSU_TAG }}
-        echo "UPLOADNAME=-KernelSU" >> $GITHUB_ENV
+       #echo "UPLOADNAME=-KernelSU" >> $GITHUB_ENV
+
+  
 
 ####            
 #    - name: 设置ccache缓存
