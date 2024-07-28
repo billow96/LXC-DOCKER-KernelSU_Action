@@ -1,4 +1,4 @@
-name: 编译 lxc-docker_gemini 内核 clang 14
+name: 编译 lxc-docker_surya 内核 clang 14
 on:
   watch:
     types: [started]
@@ -15,11 +15,11 @@ jobs:
     
     - name: 环境变量配置
       run: |
-        cat config_gemini.env | grep KERNEL_SOURCE= >> $GITHUB_ENV
-        cat config_gemini.env | grep KERNEL_SOURCE_BRANCH= >> $GITHUB_ENV
-        cat config_gemini.env | grep KERNEL_CONFIG= >> $GITHUB_ENV
-        cat config_gemini.env | grep KERNEL_ZIP_NAME= >> $GITHUB_ENV
-        cat config_gemini.env | grep LLVM_CONFIG= >> $GITHUB_ENV
+        cat config_surya.env | grep KERNEL_SOURCE= >> $GITHUB_ENV
+        cat config_surya.env | grep KERNEL_SOURCE_BRANCH= >> $GITHUB_ENV
+        cat config_surya.env | grep KERNEL_CONFIG= >> $GITHUB_ENV
+        cat config_surya.env | grep KERNEL_ZIP_NAME= >> $GITHUB_ENV
+        cat config_surya.env | grep LLVM_CONFIG= >> $GITHUB_ENV
 
     - name: 构建编译内核环境
       run: |
