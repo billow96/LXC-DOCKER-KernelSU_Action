@@ -19,7 +19,7 @@ jobs:
         cat config_surya_crd.env | grep KERNEL_SOURCE_BRANCH= >> $GITHUB_ENV
         cat config_surya_crd.env | grep KERNEL_CONFIG= >> $GITHUB_ENV
         cat config_surya_crd.env | grep KERNEL_ZIP_NAME= >> $GITHUB_ENV
-        cat config.env | grep ENABLE_KERNELSU= >> $GITHUB_ENV
+        cat config_surya_crd.env | grep ENABLE_KERNELSU= >> $GITHUB_ENV
         cat config_surya_crd.env | grep LLVM_CONFIG= >> $GITHUB_ENV
 
     - name: 构建编译内核环境
