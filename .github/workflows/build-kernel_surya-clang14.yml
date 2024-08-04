@@ -35,10 +35,9 @@ jobs:
         mkdir clang-aosp
         git clone -q --depth=1 --single-branch https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86 -b android13-release clang-aosp
 
-        mkdir dtc_ext
-        wget https://android.googlesource.com/platform/prebuilts/misc/+archive/refs/heads/${{ env.CLANG_BRANCH }}/linux-x86/dtc.tar.gz
-        tar -C dtc_ext/ -zxvf dtc.tar.gz
-    
+        mkdir dtc-aosp
+        git clone -q --depth=1 --single-branch https://android.googlesource.com/platform/prebuilts/misc  -b android13-release dtc-aosp
+
     - name: 下载内核源码
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace
@@ -86,7 +85,9 @@ jobs:
     - name: 开始编译内核
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
-        export DTC_EXT=$GITHUB_WORKSPACE/kernel_workspace/dtc_ext/dtc
+        
+        export DTC_EXT=$GITHUB_WORKSPACE/kernel_workspace/dtc-aosp/linux-x86/dtc/dtc
+  
         export PATH=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/clang-r450784d/bin:$PATH
         export KBUILD_BUILD_HOST=17
         export KBUILD_BUILD_USER=HyperPower
