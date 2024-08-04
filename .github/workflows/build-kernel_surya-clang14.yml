@@ -34,7 +34,10 @@ jobs:
         cd $GITHUB_WORKSPACE/kernel_workspace
         mkdir clang-aosp
         git clone -q --depth=1 --single-branch https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86 -b android13-release clang-aosp
-    
+
+        mkdir dtc_ext
+        wget https://android.googlesource.com/platform/prebuilts/misc/+archive/refs/heads/${{ env.CLANG_BRANCH }}/linux-x86/dtc.tar.gz
+        tar -C dtc_ext/ -zxvf dtc.tar.gz
     
     - name: 下载内核源码
       run: |
