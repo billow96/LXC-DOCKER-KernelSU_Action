@@ -8,7 +8,7 @@ on:
 jobs:
   build:
     name: 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     
     steps:
     - uses: actions/checkout@v3
@@ -19,6 +19,7 @@ jobs:
         cat config_surya_crd.env | grep KERNEL_SOURCE_BRANCH= >> $GITHUB_ENV
         cat config_surya_crd.env | grep KERNEL_CONFIG= >> $GITHUB_ENV
         cat config_surya_crd.env | grep KERNEL_ZIP_NAME= >> $GITHUB_ENV
+        cat config_surya_crd.env | grep ENABLE_KERNELSU= >> $GITHUB_ENV
         cat config_surya_crd.env | grep LLVM_CONFIG= >> $GITHUB_ENV
 
     - name: 构建编译内核环境
@@ -33,8 +34,10 @@ jobs:
         cd $GITHUB_WORKSPACE/kernel_workspace
         mkdir clang-aosp
         git clone -q --depth=1 --single-branch https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86 -b android13-release clang-aosp
-    
-    
+
+        #mkdir dtc-aosp
+        #git clone -q --depth=1 --single-branch https://android.googlesource.com/platform/prebuilts/misc  -b android13-release dtc-aosp
+
     - name: 下载内核源码
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace
@@ -58,7 +61,18 @@ jobs:
         ./runcpatch.sh android-kernel/kernel/cgroup.c               
         fi
 
-  
+
+    - name: 开启KSU
+      if: env.ENABLE_KERNELSU == 'true'
+      run: |
+        cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
+        rm -rf KernelSU
+        #curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s ${{ env.KERNELSU_TAG }}
+        curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s v0.9.5
+        #echo "UPLOADNAME=-KernelSU" >> $GITHUB_ENV
+
+
+
 
 ####            
 #    - name: 设置ccache缓存
@@ -71,25 +85,35 @@ jobs:
     - name: 开始编译内核
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
+        
+        #export DTC_EXT=$GITHUB_WORKSPACE/kernel_workspace/dtc-aosp/linux-x86/dtc/dtc
+  
         export PATH=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/clang-r450784d/bin:$PATH
+        export DTC_EXT=/usr/bin/dtc
         export KBUILD_BUILD_HOST=17
         export KBUILD_BUILD_USER=HyperPower
         export CONFIG_FILE="${{ env.KERNEL_CONFIG }}"
         make -s -j$(nproc --all) O=out ARCH=arm64 ${{ env.KERNEL_CONFIG }}
+        
         if [ ${{env.LLVM_CONFIG}}=y ]; then
         make -j$(nproc --all) CC="clang" O=out ARCH=arm64 CLANG_TRIPLE="aarch64-linux-gnu-" CROSS_COMPILE="aarch64-linux-gnu-" CROSS_COMPILE_ARM32="arm-linux-gnueabi-" LLVM=1 LLVM_IAS=1
         else
         make -j$(nproc --all) CC="clang" O=out ARCH=arm64 CLANG_TRIPLE="aarch64-linux-gnu-" CROSS_COMPILE="aarch64-linux-gnu-" CROSS_COMPILE_ARM32="arm-linux-gnueabi-"
         fi
+
+
+        
                 
     - name: 准备打包内核
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace
-        git clone https://github.com/osm0sis/AnyKernel3
+        #git clone https://github.com/osm0sis/AnyKernel3
+        git clone https://github.com/Flyme66/AnyKernel3_v26.4.git
         sed -i 's/do.devicecheck=1/do.devicecheck=0/g' AnyKernel3/anykernel.sh
         sed -i 's!block=/dev/block/platform/omap/omap_hsmmc.0/by-name/boot;!block=/dev/block/bootdevice/by-name/boot;!g' AnyKernel3/anykernel.sh
         sed -i 's/is_slot_device=1;/is_slot_device=0;/g' AnyKernel3/anykernel.sh
-        cp android-kernel/out/arch/arm64/boot/Image.gz-dtb AnyKernel3/
+        #cp android-kernel/out/arch/arm64/boot/Image.gz-dtb AnyKernel3/
+        cp android-kernel/out/arch/arm64/boot/Image.gz AnyKernel3/
         rm -rf AnyKernel3/.git* AnyKernel3/README.md
         rm -rf AnyKernel3/ramdisk AnyKernel3/modules AnyKernel3/patch
     
