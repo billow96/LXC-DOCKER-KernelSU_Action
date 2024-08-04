@@ -86,9 +86,10 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
         
-        export DTC_EXT=$GITHUB_WORKSPACE/kernel_workspace/dtc-aosp/linux-x86/dtc/dtc
+        #export DTC_EXT=$GITHUB_WORKSPACE/kernel_workspace/dtc-aosp/linux-x86/dtc/dtc
   
         export PATH=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/clang-r450784d/bin:$PATH
+        export DTC_EXT=/usr/bin/dtc
         export KBUILD_BUILD_HOST=17
         export KBUILD_BUILD_USER=HyperPower
         export CONFIG_FILE="${{ env.KERNEL_CONFIG }}"
@@ -100,6 +101,8 @@ jobs:
         make -j$(nproc --all) CC="clang" O=out ARCH=arm64 CLANG_TRIPLE="aarch64-linux-gnu-" CROSS_COMPILE="aarch64-linux-gnu-" CROSS_COMPILE_ARM32="arm-linux-gnueabi-" DTC_EXT=${DTC_EXT}
         fi
 
+
+#make -j$(nproc --all) CC="clang" O=out ARCH=arm64 CLANG_TRIPLE="aarch64-linux-gnu-" CROSS_COMPILE="aarch64-linux-gnu-" CROSS_COMPILE_ARM32="arm-linux-gnueabi-" LLVM=1 LLVM_IAS=1
 
         
                 
